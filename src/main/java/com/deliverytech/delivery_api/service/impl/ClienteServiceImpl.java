@@ -74,9 +74,7 @@ public class ClienteServiceImpl implements ClienteService {
                 cliente.getNome(),
                 cliente.getEmail(),
                 cliente.getTelefone(),
-                cliente.getEndereco(), 
-                cliente.getAtivo(),
-                cliente.getDataCriacao()
+                cliente.getAtivo()
         );
     }
 }
