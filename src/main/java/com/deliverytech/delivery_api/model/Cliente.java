@@ -19,12 +19,16 @@ public class Cliente {
 
     private String nome;
     private String telefone;
+    private String endereco;
 
     @Column(unique = true)
     private String email;
 
     @Builder.Default
     private Boolean ativo = true;
+
+    @Builder.Default
+    private LocalDateTime dataCriacao = LocalDateTime.now();
 
     // IMPLEMENTAR APENAS O MÉTODO PERSONALIZADO
     @JsonIgnore
@@ -39,12 +43,14 @@ public class Cliente {
      */
 
     // Construtor customizado para testes
-    public Cliente(Long id, String nome, String email, String telefone,
+    public Cliente(Long id, String nome, String email, String telefone, String endereco, LocalDateTime dataCriacao,
             Boolean ativo, Object unused) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.telefone = telefone;
+        this.endereco = endereco;
+        this.dataCriacao = dataCriacao;
         this.ativo = ativo;
         // O parâmetro 'unused' é ignorado
     }

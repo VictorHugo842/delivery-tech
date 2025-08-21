@@ -1,18 +1,18 @@
 package com.deliverytech.delivery_api.dto.response;
 
 import lombok.*;
-import java.time.LocalDateTime;
+
+import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class ClienteResponse {
+public class RestauranteResponse {
     private Long id;
     private String nome;
-    private String email;
+    private String categoria;
     private String telefone;
-    private String endereco;
+    private BigDecimal taxaEntrega;
+    private Integer tempoEntregaMinutos;
     private Boolean ativo;
-    private LocalDateTime dataCadastro;
 }
