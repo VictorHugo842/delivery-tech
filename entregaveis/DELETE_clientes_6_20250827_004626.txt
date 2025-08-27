@@ -1,0 +1,10 @@
+=== ENTREGA - TESTE DE ENDPOINT ===
+Data/Hora: 27/08/2025 00:46:26
+Método: DELETE
+URL Completa: http://localhost:8080/api/clientes/6
+Status HTTP: 400
+Content-Type: text/plain;charset=UTF-8
+
+
+=== RESPOSTA REAL ===
+Erro: Cliente já está inativo: 6

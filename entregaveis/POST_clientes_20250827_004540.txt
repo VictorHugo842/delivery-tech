@@ -1,0 +1,25 @@
+=== ENTREGA - TESTE DE ENDPOINT ===
+Data/Hora: 27/08/2025 00:45:40
+Método: POST
+URL Completa: http://localhost:8080/api/clientes
+Status HTTP: 201
+Content-Type: application/json
+
+=== DADOS ENVIADOS ===
+{
+  "nome" : "testtesttest",
+  "telefone" : "23937157481",
+  "email" : "string@string.com",
+  "endereco" : "string"
+}
+
+=== RESPOSTA REAL ===
+{
+  "id" : 6,
+  "nome" : "testtesttest",
+  "telefone" : "23937157481",
+  "endereco" : "string",
+  "email" : "string@string.com",
+  "ativo" : true,
+  "dataCriacao" : "2025-08-27T00:45:40.4743419"
+}

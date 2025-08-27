@@ -32,11 +32,11 @@ public class PedidoServiceImpl implements PedidoService {
         pedido.setStatus(StatusPedido.CRIADO); // ✅ USAR CRIADO ao invés de PENDENTE
         pedido.setDataPedido(LocalDateTime.now());
         pedido.setValorTotal(BigDecimal.ZERO); // ✅ Iniciar com valor zero
-
+        
         // ✅ SALVAR e retornar o pedido
         Pedido pedidoSalvo = pedidoRepository.save(pedido);
         log.info("Pedido criado com sucesso - ID: {}", pedidoSalvo.getId());
-
+        
         return pedidoSalvo;
     }
 
@@ -104,23 +104,23 @@ public class PedidoServiceImpl implements PedidoService {
         return pedidoRepository.save(pedido);
     }
 
-    @Override
-    @Transactional
-    public Pedido atualizarStatus(Long pedidoId, StatusPedido novoStatus) {
-        log.info("Atualizando status do pedido {} para: {}", pedidoId, novoStatus);
-
-        Pedido pedido = pedidoRepository.findById(pedidoId)
-                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
-
-        log.info("Status atual do pedido {}: {}", pedidoId, pedido.getStatus());
-
-        pedido.setStatus(novoStatus);
-
-        Pedido salvo = pedidoRepository.save(pedido);
-        log.info("Status do pedido {} atualizado com sucesso para: {}", pedidoId, novoStatus);
-
-        return salvo;
-    }
+@Override
+@Transactional
+public Pedido atualizarStatus(Long pedidoId, StatusPedido novoStatus) {
+    log.info("Atualizando status do pedido {} para: {}", pedidoId, novoStatus);
+    
+    Pedido pedido = pedidoRepository.findById(pedidoId)
+        .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+    
+    log.info("Status atual do pedido {}: {}", pedidoId, pedido.getStatus());
+    
+    pedido.setStatus(novoStatus);
+    
+    Pedido salvo = pedidoRepository.save(pedido);
+    log.info("Status do pedido {} atualizado com sucesso para: {}", pedidoId, novoStatus);
+    
+    return salvo;
+}
 
     // ✅ IMPLEMENTAR método calcularTotal
     @Override
@@ -158,7 +158,7 @@ public class PedidoServiceImpl implements PedidoService {
         pedido.setStatus(StatusPedido.CANCELADO);
         Pedido pedidoCancelado = pedidoRepository.save(pedido);
         log.info("Pedido cancelado - ID: {}", pedidoId);
-
+        
         return pedidoCancelado; // ✅ RETORNAR o pedido cancelado
     }
 
@@ -176,7 +176,7 @@ public class PedidoServiceImpl implements PedidoService {
         return pedidoRepository.findByDataPedidoBetween(inicio, fim);
     }
 
-    @Override
+        @Override
     @Transactional(readOnly = true)
     public List<Pedido> listarTodos() {
         return pedidoRepository.findAll();
@@ -190,37 +190,35 @@ public class PedidoServiceImpl implements PedidoService {
     @Transactional(readOnly = true)
     public BigDecimal calcularTotalPedido(List<ItemPedidoRequest> itens) {
         log.info("Calculando total do pedido com {} itens", itens.size());
-
+        
         if (itens == null || itens.isEmpty()) {
             log.warn("Lista de itens vazia, retornando total zero");
             return BigDecimal.ZERO;
         }
-
+        
         BigDecimal total = BigDecimal.ZERO;
-
+        
         for (ItemPedidoRequest itemRequest : itens) {
             // Buscar produto para obter preço atual
             Produto produto = produtoRepository.findById(itemRequest.getProdutoId()) // CORRIGIDO: itemDTO → itemRequest
-                    .orElseThrow(
-                            () -> new RuntimeException("Produto não encontrado - ID: " + itemRequest.getProdutoId())); // CORRIGIDO
-
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado - ID: " + itemRequest.getProdutoId())); // CORRIGIDO
+            
             // Validar disponibilidade
             if (!produto.getAtivo()) {
                 throw new RuntimeException("Produto não está disponível - ID: " + itemRequest.getProdutoId()); // CORRIGIDO
             }
-
+            
             // Calcular subtotal do item
             BigDecimal precoUnitario = produto.getPreco();
             BigDecimal quantidade = BigDecimal.valueOf(itemRequest.getQuantidade()); // CORRIGIDO: itemDTO → itemRequest
             BigDecimal subtotal = precoUnitario.multiply(quantidade);
-
+            
             total = total.add(subtotal);
-
-            log.debug("Item calculado - Produto: {}, Qtd: {}, Preço: R$ {}, Subtotal: R$ {}",
-                    produto.getNome(), itemRequest.getQuantidade(), precoUnitario, subtotal); // CORRIGIDO: itemDTO →
-                                                                                              // itemRequest
+            
+            log.debug("Item calculado - Produto: {}, Qtd: {}, Preço: R$ {}, Subtotal: R$ {}", 
+                    produto.getNome(), itemRequest.getQuantidade(), precoUnitario, subtotal); // CORRIGIDO: itemDTO → itemRequest
         }
-
+        
         log.info("Total calculado: R$ {}", total);
         return total;
     }
@@ -229,7 +227,7 @@ public class PedidoServiceImpl implements PedidoService {
     @Transactional
     public void deletar(Long id) {
         Pedido pedido = pedidoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+            .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
         pedidoRepository.delete(pedido);
         log.info("Pedido deletado - ID: {}", id);
     }
@@ -237,42 +235,41 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     @Transactional(readOnly = true)
     public List<Pedido> listarComFiltros(StatusPedido status, LocalDate dataInicio, LocalDate dataFim) {
-        log.info("Listando pedidos com filtros - Status: {}, Data início: {}, Data fim: {}", status, dataInicio,
-                dataFim);
-
+        log.info("Listando pedidos com filtros - Status: {}, Data início: {}, Data fim: {}", status, dataInicio, dataFim);
+        
         // Se nenhum filtro foi fornecido, retorna todos
         if (status == null && dataInicio == null && dataFim == null) {
             return pedidoRepository.findAll();
         }
-
+        
         // Converter LocalDate para LocalDateTime para comparação
         LocalDateTime inicioDateTime = dataInicio != null ? dataInicio.atStartOfDay() : null;
         LocalDateTime fimDateTime = dataFim != null ? dataFim.atTime(23, 59, 59) : null;
-
+        
         // Se apenas status foi fornecido
         if (status != null && inicioDateTime == null && fimDateTime == null) {
             return pedidoRepository.findByStatus(status);
         }
-
+        
         // Se apenas período foi fornecido
         if (status == null && inicioDateTime != null && fimDateTime != null) {
             return pedidoRepository.findByDataPedidoBetween(inicioDateTime, fimDateTime);
         }
-
+        
         // Se status e período foram fornecidos
         if (status != null && inicioDateTime != null && fimDateTime != null) {
             return pedidoRepository.findByStatusAndDataPedidoBetween(status, inicioDateTime, fimDateTime);
         }
-
+        
         // Casos parciais (apenas dataInicio ou apenas dataFim)
         if (inicioDateTime != null && fimDateTime == null) {
             return pedidoRepository.findByDataPedidoGreaterThanEqual(inicioDateTime);
         }
-
+        
         if (inicioDateTime == null && fimDateTime != null) {
             return pedidoRepository.findByDataPedidoLessThanEqual(fimDateTime);
         }
-
+        
         return pedidoRepository.findAll();
     }
 }

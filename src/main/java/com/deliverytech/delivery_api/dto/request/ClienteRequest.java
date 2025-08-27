@@ -11,20 +11,20 @@ import lombok.*;
 @AllArgsConstructor
 public class ClienteRequest {
 
-	@NotBlank(message = "Nome é obrigatório")
-	@Size(min = 10, max = 100, message = "Não pode conter menos de 10 ou mais de 100 caracteres")
-	private String nome;
+    @NotBlank(message = "Nome é obrigatório")
+    @Size(min=10, max = 100, message = "Não pode conter menos de 10 ou mais de 100 caracteres")
+    private String nome;
+    
+    @NotBlank(message = "Telefone é obrigatório")
+    @Pattern(regexp = "\\d{10,11}", message = "Telefone deve ter 10 ou 11 dígitos")
+    private String telefone;
 
-	@NotBlank(message = "Telefone é obrigatório")
-	@Pattern(regexp = "\\d{10,11}", message = "Telefone deve ter 10 ou 11 dígitos")
-	private String telefone;
+    @Email
+    @Size(max = 255, message = "Email não pode ter mais de 255 caracteres")
+    @NotBlank(message = "Email é obrigatório")
+    private String email;
 
-	@Email
-	@Size(max = 255, message = "Email não pode ter mais de 255 caracteres")
-	@NotBlank(message = "Email é obrigatório")
-	private String email;
-
-	@NotBlank(message = "Endereço é obrigatório")
-	@Size(max = 255, message = "Endereço não pode ter mais de 255 caracteres")
-	private String endereco;
+    @NotBlank(message = "Endereço é obrigatório")
+    @Size(max = 255, message = "Endereço não pode ter mais de 255 caracteres")
+    private String endereco;
 }

@@ -1,0 +1,24 @@
+=== ENTREGA - TESTE DE ENDPOINT ===
+Data/Hora: 27/08/2025 00:45:36
+Método: POST
+URL Completa: http://localhost:8080/api/clientes
+Status HTTP: 400
+Content-Type: application/json
+
+=== DADOS ENVIADOS ===
+{
+  "nome" : "testtest",
+  "telefone" : "23937157481",
+  "email" : "string@string.com",
+  "endereco" : "string"
+}
+
+=== RESPOSTA REAL ===
+{
+  "validationErrors" : {
+    "nome" : "Não pode conter menos de 10 ou mais de 100 caracteres"
+  },
+  "error" : "Dados inválidos",
+  "timestamp" : "2025-08-27T00:45:36.7069959",
+  "status" : 400
+}

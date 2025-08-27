@@ -40,7 +40,7 @@ public class ClienteController {
         } catch (Exception e) {
             log.error("Erro interno ao cadastrar cliente", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Erro interno do servidor");
+                .body("Erro interno do servidor");
         }
     }
 
@@ -68,7 +68,7 @@ public class ClienteController {
             return ResponseEntity.ok(ApiResponseWrapper.success(cliente.get(), "Cliente encontrado"));
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(ApiResponseWrapper.error("Cliente não encontrado"));
+                .body(ApiResponseWrapper.error("Cliente não encontrado"));
         }
     }
 
@@ -105,7 +105,7 @@ public class ClienteController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<?> atualizar(@PathVariable Long id,
-            @Valid @RequestBody ClienteRequest clienteRequest) { // ✅ ALTERAR: Cliente → ClienteRequest
+                                      @Valid @RequestBody ClienteRequest clienteRequest) { // ✅ ALTERAR: Cliente → ClienteRequest
         try {
             log.info("Recebida requisição para atualizar cliente ID: {}", id);
             Cliente clienteAtualizado = clienteService.atualizar(id, clienteRequest); // ✅ ALTERAR se o service suportar
@@ -116,7 +116,7 @@ public class ClienteController {
         } catch (Exception e) {
             log.error("Erro interno ao atualizar cliente", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Erro interno do servidor");
+                .body("Erro interno do servidor");
         }
     }
 
@@ -136,7 +136,7 @@ public class ClienteController {
         } catch (Exception e) {
             log.error("Erro interno ao inativar cliente", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Erro interno do servidor");
+                .body("Erro interno do servidor");
         }
     }
 
@@ -149,20 +149,21 @@ public class ClienteController {
         try {
             log.info("Recebida requisição para alterar status do cliente ID: {}", id);
             Cliente clienteAtualizado = clienteService.ativarDesativarCliente(id);
-
+            
             String status = clienteAtualizado.getAtivo() ? "ativado" : "desativado";
             return ResponseEntity.ok()
-                    .body(Map.of(
-                            "mensagem", "Cliente " + status + " com sucesso",
-                            "cliente", clienteAtualizado));
-
+                .body(Map.of(
+                    "mensagem", "Cliente " + status + " com sucesso",
+                    "cliente", clienteAtualizado
+                ));
+            
         } catch (IllegalArgumentException e) {
             log.warn("Erro ao alterar status do cliente: {}", e.getMessage());
             return ResponseEntity.badRequest().body("Erro: " + e.getMessage());
         } catch (Exception e) {
             log.error("Erro interno ao alterar status do cliente", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Erro interno do servidor");
+                .body("Erro interno do servidor");
         }
     }
 }

@@ -38,24 +38,23 @@ public class RestauranteController {
 
     @GetMapping
     public ResponseEntity<List<RestauranteResponse>> listarTodos(
-            @RequestParam(required = false) String categoria,
-            @RequestParam(required = false) Boolean ativo) {
-
+        @RequestParam(required = false) String categoria,
+        @RequestParam(required = false) Boolean ativo) {
+        
         List<Restaurante> restaurantes = restauranteService.listarComFiltros(categoria, ativo);
-
+        
         List<RestauranteResponse> response = restaurantes.stream()
-                .map(r -> new RestauranteResponse(r.getId(), r.getNome(), r.getCategoria(),
-                        r.getTelefone(), r.getTaxaEntrega(), r.getTempoEntregaMinutos(), r.getAtivo()))
-                .collect(Collectors.toList());
-
+            .map(r -> new RestauranteResponse(r.getId(), r.getNome(), r.getCategoria(), 
+                r.getTelefone(), r.getTaxaEntrega(), r.getTempoEntregaMinutos(), r.getAtivo()))
+            .collect(Collectors.toList());
+        
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<RestauranteResponse> buscarPorId(@PathVariable Long id) {
         return restauranteService.buscarPorId(id)
-                .map(r -> new RestauranteResponse(r.getId(), r.getNome(), r.getCategoria(), r.getTelefone(),
-                        r.getTaxaEntrega(), r.getTempoEntregaMinutos(), r.getAtivo()))
+                .map(r -> new RestauranteResponse(r.getId(), r.getNome(), r.getCategoria(), r.getTelefone(), r.getTaxaEntrega(), r.getTempoEntregaMinutos(), r.getAtivo()))
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -63,18 +62,16 @@ public class RestauranteController {
     @GetMapping("/categoria/{categoria}")
     public List<RestauranteResponse> buscarPorCategoria(@PathVariable String categoria) {
         return restauranteService.buscarPorCategoria(categoria).stream()
-                .map(r -> new RestauranteResponse(r.getId(), r.getNome(), r.getCategoria(), r.getTelefone(),
-                        r.getTaxaEntrega(), r.getTempoEntregaMinutos(), r.getAtivo()))
+                .map(r -> new RestauranteResponse(r.getId(), r.getNome(), r.getCategoria(), r.getTelefone(), r.getTaxaEntrega(), r.getTempoEntregaMinutos(), r.getAtivo()))
                 .collect(Collectors.toList());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RestauranteResponse> atualizar(@PathVariable Long id,
-            @Valid @RequestBody RestauranteRequest request) {
+    public ResponseEntity<RestauranteResponse> atualizar(@PathVariable Long id, @Valid @RequestBody RestauranteRequest request) {
         Restaurante salvo = restauranteService.atualizar(id, request);
-
+        
         return ResponseEntity.ok(new RestauranteResponse(
-                salvo.getId(), salvo.getNome(), salvo.getCategoria(), salvo.getTelefone(),
+                salvo.getId(), salvo.getNome(), salvo.getCategoria(), salvo.getTelefone(), 
                 salvo.getTaxaEntrega(), salvo.getTempoEntregaMinutos(), salvo.getAtivo()));
     }
 
@@ -92,8 +89,8 @@ public class RestauranteController {
     public List<RestauranteResponse> buscarDisponiveis() {
         return restauranteService.listarAtivos().stream()
                 .map(r -> new RestauranteResponse(
-                        r.getId(), r.getNome(), r.getCategoria(), r.getTelefone(),
-                        r.getTaxaEntrega(), r.getTempoEntregaMinutos(), r.getAtivo()))
+                    r.getId(), r.getNome(), r.getCategoria(), r.getTelefone(), 
+                    r.getTaxaEntrega(), r.getTempoEntregaMinutos(), r.getAtivo()))
                 .collect(Collectors.toList());
     }
 
@@ -102,26 +99,27 @@ public class RestauranteController {
      * POST /api/restaurantes/{id}/taxa-entrega
      */
     @PostMapping("/{id}/taxa-entrega")
-    public ResponseEntity<?> calcularTaxaEntrega(@PathVariable Long id,
-            @RequestBody Map<String, String> request) {
+    public ResponseEntity<?> calcularTaxaEntrega(@PathVariable Long id, 
+                                               @RequestBody Map<String, String> request) {
         try {
             String cep = request.get("cep");
             if (cep == null || cep.trim().isEmpty()) {
                 return ResponseEntity.badRequest()
-                        .body(Map.of("erro", "CEP é obrigatório"));
+                    .body(Map.of("erro", "CEP é obrigatório"));
             }
-
+            
             BigDecimal taxa = restauranteService.calcularTaxaEntrega(id, cep);
-
+            
             return ResponseEntity.ok(Map.of(
-                    "restauranteId", id,
-                    "cep", cep,
-                    "taxaEntrega", taxa,
-                    "moeda", "BRL"));
-
+                "restauranteId", id,
+                "cep", cep,
+                "taxaEntrega", taxa,
+                "moeda", "BRL"
+            ));
+            
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest()
-                    .body(Map.of("erro", e.getMessage()));
+                .body(Map.of("erro", e.getMessage()));
         }
     }
 
@@ -133,22 +131,22 @@ public class RestauranteController {
     public ResponseEntity<List<ProdutoResponse>> buscarProdutosPorRestaurante(@PathVariable Long id) {
         // Verificar se restaurante existe
         restauranteService.buscarPorId(id)
-                .orElseThrow(() -> new RuntimeException("Restaurante não encontrado"));
-
+            .orElseThrow(() -> new RuntimeException("Restaurante não encontrado"));
+        
         // Buscar produtos do restaurante
         List<Produto> produtos = produtoService.buscarPorRestaurante(id);
-
+        
         // Converter para Response
         List<ProdutoResponse> response = produtos.stream()
-                .map(p -> new ProdutoResponse(
-                        p.getId(),
-                        p.getNome(),
-                        p.getCategoria(),
-                        p.getDescricao(),
-                        p.getPreco(),
-                        p.getDisponivel()))
-                .collect(Collectors.toList());
-
+            .map(p -> new ProdutoResponse(
+                p.getId(), 
+                p.getNome(), 
+                p.getCategoria(), 
+                p.getDescricao(), 
+                p.getPreco(), 
+                p.getDisponivel()))
+            .collect(Collectors.toList());
+        
         return ResponseEntity.ok(response);
     }
 
@@ -157,15 +155,15 @@ public class RestauranteController {
      * PATCH /api/restaurantes/{id}/status
      */
     @PatchMapping("/{id}/status")
-    public ResponseEntity<RestauranteResponse> alterarStatus(@PathVariable Long id,
-            @RequestBody Map<String, Boolean> request) {
+    public ResponseEntity<RestauranteResponse> alterarStatus(@PathVariable Long id, 
+                                                            @RequestBody Map<String, Boolean> request) {
         Boolean ativo = request.get("ativo");
         Restaurante restaurante = restauranteService.alterarStatus(id, ativo);
-
+        
         return ResponseEntity.ok(new RestauranteResponse(
-                restaurante.getId(), restaurante.getNome(), restaurante.getCategoria(),
-                restaurante.getTelefone(), restaurante.getTaxaEntrega(),
-                restaurante.getTempoEntregaMinutos(), restaurante.getAtivo()));
+            restaurante.getId(), restaurante.getNome(), restaurante.getCategoria(), 
+            restaurante.getTelefone(), restaurante.getTaxaEntrega(), 
+            restaurante.getTempoEntregaMinutos(), restaurante.getAtivo()));
     }
 
     /**
@@ -173,15 +171,16 @@ public class RestauranteController {
      * GET /api/restaurantes/{id}/taxa-entrega/{cep}
      */
     @GetMapping("/{id}/taxa-entrega/{cep}")
-    public ResponseEntity<Map<String, Object>> calcularTaxaEntregaPorCep(@PathVariable Long id,
-            @PathVariable String cep) {
+    public ResponseEntity<Map<String, Object>> calcularTaxaEntregaPorCep(@PathVariable Long id, 
+                                                                         @PathVariable String cep) {
         BigDecimal taxa = restauranteService.calcularTaxaEntrega(id, cep);
-
+        
         return ResponseEntity.ok(Map.of(
-                "restauranteId", id,
-                "cep", cep,
-                "taxaEntrega", taxa,
-                "moeda", "BRL"));
+            "restauranteId", id,
+            "cep", cep,
+            "taxaEntrega", taxa,
+            "moeda", "BRL"
+        ));
     }
 
     /**
@@ -191,13 +190,13 @@ public class RestauranteController {
     @GetMapping("/proximos/{cep}")
     public ResponseEntity<List<RestauranteResponse>> buscarProximos(@PathVariable String cep) {
         List<Restaurante> restaurantes = restauranteService.buscarProximos(cep);
-
+        
         List<RestauranteResponse> response = restaurantes.stream()
-                .map(r -> new RestauranteResponse(
-                        r.getId(), r.getNome(), r.getCategoria(), r.getTelefone(),
-                        r.getTaxaEntrega(), r.getTempoEntregaMinutos(), r.getAtivo()))
-                .collect(Collectors.toList());
-
+            .map(r -> new RestauranteResponse(
+                r.getId(), r.getNome(), r.getCategoria(), r.getTelefone(),
+                r.getTaxaEntrega(), r.getTempoEntregaMinutos(), r.getAtivo()))
+            .collect(Collectors.toList());
+        
         return ResponseEntity.ok(response);
     }
 }

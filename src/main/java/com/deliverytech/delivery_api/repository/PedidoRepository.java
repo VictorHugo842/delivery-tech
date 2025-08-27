@@ -16,11 +16,8 @@ import java.util.Optional;
 public interface PedidoRepository extends JpaRepository<Pedido, Long> {
 
     List<Pedido> findByClienteId(Long clienteId);
-
     List<Pedido> findByRestauranteId(Long restauranteId);
-
     List<Pedido> findByStatus(StatusPedido status);
-
     List<Pedido> findByDataPedidoBetween(LocalDateTime inicio, LocalDateTime fim);
 
     // ✅ ADICIONAR: Query com JOIN FETCH para carregar itens
@@ -31,30 +28,30 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
     @Query("SELECT p FROM Pedido p LEFT JOIN FETCH p.itens i LEFT JOIN FETCH i.produto WHERE p.cliente.id = :clienteId")
     List<Pedido> findByClienteIdWithItens(@Param("clienteId") Long clienteId);
 
-    // === CONSULTAS CUSTOMIZADAS ===
+    //=== CONSULTAS CUSTOMIZADAS ===
     @Query("SELECT p.restaurante.nome, SUM(p.valorTotal) " +
-            "FROM Pedido p " +
-            "GROUP BY p.restaurante.nome " +
-            "ORDER BY SUM(p.valorTotal) DESC")
+           "FROM Pedido p " +
+           "GROUP BY p.restaurante.nome " +
+           "ORDER BY SUM(p.valorTotal) DESC")
     List<Object[]> calcularTotalVendasPorRestaurante();
-
+    
     @Query("SELECT p FROM Pedido p WHERE p.valorTotal > :valor ORDER BY p.valorTotal DESC")
     List<Pedido> buscarPedidosComValorAcimaDe(@Param("valor") BigDecimal valor);
-
+    
     @Query("SELECT p FROM Pedido p " +
-            "WHERE p.dataPedido BETWEEN :inicio AND :fim " +
-            "AND p.status = :status " +
-            "ORDER BY p.dataPedido DESC")
+           "WHERE p.dataPedido BETWEEN :inicio AND :fim " +
+           "AND p.status = :status " +
+           "ORDER BY p.dataPedido DESC")
     List<Pedido> relatorioPedidosPorPeriodoEStatus(
             @Param("inicio") LocalDateTime inicio,
             @Param("fim") LocalDateTime fim,
             @Param("status") StatusPedido status);
 
     @Query("SELECT p.restaurante.nome as nomeRestaurante, " +
-            "SUM(p.valorTotal) as totalVendas, " +
-            "COUNT(p.id) as quantidadePedidos " +
-            "FROM Pedido p " +
-            "GROUP BY p.restaurante.nome")
+           "SUM(p.valorTotal) as totalVendas, " +
+           "COUNT(p.id) as quantidadePedidos " +
+           "FROM Pedido p " +
+           "GROUP BY p.restaurante.nome")
     List<RelatorioVendas> obterRelatorioVendasPorRestaurante();
 
     /**

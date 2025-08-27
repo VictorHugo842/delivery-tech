@@ -14,8 +14,7 @@ import java.util.List;
 @Builder
 public class Restaurante {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String nome;
@@ -24,7 +23,7 @@ public class Restaurante {
 
     private String telefone;
 
-    // mudança 16/07/ Remover exceção do setter
+    //mudança 16/07/ Remover exceção do setter
     private BigDecimal avaliacao;
 
     private BigDecimal taxaEntrega;

@@ -21,39 +21,39 @@ public class ClienteServiceImpl implements ClienteService {
     private final ClienteRepository clienteRepository;
 
     /**
-     * Cadastrar novo cliente com validações completas
-     */
-    @Override
-    public Cliente cadastrar(ClienteRequest clienteRequest) {
-        log.info("Iniciando cadastro de cliente: {}", clienteRequest.getEmail());
-
-        // Converter ClienteRequest para Cliente
-        Cliente cliente = new Cliente();
-        cliente.setNome(clienteRequest.getNome());
-        cliente.setEmail(clienteRequest.getEmail());
-        cliente.setTelefone(clienteRequest.getTelefone());
-        cliente.setEndereco(clienteRequest.getEndereco()); // <-----
-
-        // Validar email único
-        if (clienteRepository.existsByEmail(cliente.getEmail())) {
-            throw new IllegalArgumentException("Email já cadastrado: " + cliente.getEmail());
+         * Cadastrar novo cliente com validações completas
+         */
+        @Override
+        public Cliente cadastrar(ClienteRequest clienteRequest) {
+            log.info("Iniciando cadastro de cliente: {}", clienteRequest.getEmail());
+            
+            // Converter ClienteRequest para Cliente
+            Cliente cliente = new Cliente();
+            cliente.setNome(clienteRequest.getNome());
+            cliente.setEmail(clienteRequest.getEmail());
+            cliente.setTelefone(clienteRequest.getTelefone());
+            cliente.setEndereco(clienteRequest.getEndereco()); // <-----
+            
+            // Validar email único
+            if (clienteRepository.existsByEmail(cliente.getEmail())) {
+                throw new IllegalArgumentException("Email já cadastrado: " + cliente.getEmail());
+            }
+    
+            // Validações de negócio
+            validarDadosCliente(cliente);
+    
+            // Definir como ativo por padrão
+            cliente.setAtivo(true);
+    
+            Cliente clienteSalvo = clienteRepository.save(cliente);
+            log.info("Cliente cadastrado com sucesso - ID: {}", clienteSalvo.getId());
+            
+            return clienteSalvo;
         }
-
-        // Validações de negócio
-        validarDadosCliente(cliente);
-
-        // Definir como ativo por padrão
-        cliente.setAtivo(true);
-
-        Cliente clienteSalvo = clienteRepository.save(cliente);
-        log.info("Cliente cadastrado com sucesso - ID: {}", clienteSalvo.getId());
-
-        return clienteSalvo;
-    }
-
-    /**
-     * Método auxiliar para cadastrar cliente a partir de uma entidade Cliente.
-     */
+    
+        /**
+         * Método auxiliar para cadastrar cliente a partir de uma entidade Cliente.
+         */
 
     /**
      * Buscar cliente por ID
@@ -101,13 +101,13 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public Cliente atualizar(Long id, ClienteRequest clienteRequest) { // CORRIGIR: Cliente → ClienteRequest
         log.info("Atualizando cliente ID: {}", id);
-
+        
         Cliente cliente = buscarPorId(id)
-                .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado: " + id));
+            .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado: " + id));
 
         // Verificar se email não está sendo usado por outro cliente
         if (!cliente.getEmail().equals(clienteRequest.getEmail()) && // CORRIGIR: clienteAtualizado → clienteRequest
-                clienteRepository.existsByEmail(clienteRequest.getEmail())) { // CORRIGIR
+            clienteRepository.existsByEmail(clienteRequest.getEmail())) { // CORRIGIR
             throw new IllegalArgumentException("Email já cadastrado: " + clienteRequest.getEmail()); // CORRIGIR
         }
 
@@ -129,7 +129,7 @@ public class ClienteServiceImpl implements ClienteService {
 
         Cliente clienteSalvo = clienteRepository.save(cliente);
         log.info("Cliente atualizado com sucesso - ID: {}", clienteSalvo.getId());
-
+        
         return clienteSalvo;
     }
 
@@ -139,9 +139,9 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public void inativar(Long id) {
         log.info("Inativando cliente ID: {}", id);
-
+        
         Cliente cliente = buscarPorId(id)
-                .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado: " + id));
+            .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado: " + id));
 
         // Verificar se cliente já está inativo
         if (!cliente.getAtivo()) {
@@ -154,7 +154,7 @@ public class ClienteServiceImpl implements ClienteService {
         } catch (Exception e) {
             cliente.setAtivo(false);
         }
-
+        
         clienteRepository.save(cliente);
         log.info("Cliente inativado com sucesso - ID: {}", id);
     }
@@ -166,16 +166,16 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public Cliente ativarDesativarCliente(Long id) {
         log.info("Alterando status do cliente ID: {}", id);
-
+        
         Cliente cliente = buscarPorId(id)
-                .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado: " + id));
+            .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado: " + id));
 
         // Toggle do status
         cliente.setAtivo(!cliente.getAtivo());
-
+        
         Cliente clienteSalvo = clienteRepository.save(cliente);
         log.info("Status do cliente alterado para: {} - ID: {}", clienteSalvo.getAtivo(), id);
-
+        
         return clienteSalvo;
     }
 

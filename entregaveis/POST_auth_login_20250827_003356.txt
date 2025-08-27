@@ -1,0 +1,15 @@
+=== ENTREGA - TESTE DE ENDPOINT ===
+Data/Hora: 27/08/2025 00:33:56
+Método: POST
+URL Completa: http://localhost:8080/api/auth/login
+Status HTTP: 401
+Content-Type: null
+
+=== DADOS ENVIADOS ===
+{
+  "username" : "victor",
+  "password" : "admin"
+}
+
+=== RESPOSTA REAL ===
+(Resposta vazia)

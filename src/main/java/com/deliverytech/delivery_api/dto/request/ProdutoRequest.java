@@ -23,10 +23,10 @@ public class ProdutoRequest {
     @DecimalMin("0.1")
     @DecimalMax("500.0")
     @NotNull(message = "Preço é obrigatório")
-    @Positive(message = "Preço deve ser positivo")
+    @Positive(message = "Preço deve ser positivo")  
     private BigDecimal preco;
 
     @NotNull(message = "ID do restaurante é obrigatório")
-    @Positive(message = "ID do restaurante deve ser positivo")
+    @Positive(message = "ID do restaurante deve ser positivo") 
     private Long restauranteId;
 }

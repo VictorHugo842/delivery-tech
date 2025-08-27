@@ -1,0 +1,21 @@
+=== ENTREGA - TESTE DE ENDPOINT ===
+Data/Hora: 27/08/2025 00:36:05
+Método: PATCH
+URL Completa: http://localhost:8080/api/clientes/6/status
+Status HTTP: 200
+Content-Type: application/json
+
+
+=== RESPOSTA REAL ===
+{
+  "cliente" : {
+    "id" : 6,
+    "nome" : "first_client",
+    "telefone" : "1313131331",
+    "endereco" : "bertioga-sp",
+    "email" : "fist@gmail.com",
+    "ativo" : false,
+    "dataCriacao" : "2025-08-27T00:35:41.744093"
+  },
+  "mensagem" : "Cliente desativado com sucesso"
+}

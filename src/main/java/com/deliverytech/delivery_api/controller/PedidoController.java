@@ -40,7 +40,7 @@ public class PedidoController {
     {
         // Ignorar o campo 'itens' ao mapear Pedido -> PedidoResponse
         modelMapper.typeMap(Pedido.class, PedidoResponse.class)
-                .addMappings(mapper -> mapper.skip(PedidoResponse::setItens));
+            .addMappings(mapper -> mapper.skip(PedidoResponse::setItens));
     }
 
     // 1. CRIAR PEDIDO (Simplificado - sem itens iniciais)
@@ -61,7 +61,7 @@ public class PedidoController {
                 .build();
 
         Pedido salvo = pedidoService.criar(pedido);
-
+        
         return ResponseEntity.status(201).body(new PedidoResponse(
                 salvo.getId(),
                 cliente.getId(),
@@ -70,7 +70,8 @@ public class PedidoController {
                 salvo.getValorTotal(),
                 salvo.getStatus(),
                 salvo.getDataPedido(),
-                List.of()));
+                List.of()
+        ));
     }
 
     // 2. BUSCAR PEDIDO POR ID
@@ -82,9 +83,9 @@ public class PedidoController {
             throw new RuntimeException("Pedido não encontrado");
         }
 
-        List<ItemPedidoResponse> itensResp = pedido.getItens() != null ? pedido.getItens().stream()
-                .map(i -> new ItemPedidoResponse(i.getProduto().getId(), i.getProduto().getNome(), i.getQuantidade(),
-                        i.getPrecoUnitario()))
+        List<ItemPedidoResponse> itensResp = pedido.getItens() != null ? 
+            pedido.getItens().stream()
+                .map(i -> new ItemPedidoResponse(i.getProduto().getId(), i.getProduto().getNome(), i.getQuantidade(), i.getPrecoUnitario()))
                 .collect(Collectors.toList()) : List.of();
 
         return ResponseEntity.ok(new PedidoResponse(
@@ -95,7 +96,8 @@ public class PedidoController {
                 pedido.getValorTotal(),
                 pedido.getStatus(),
                 pedido.getDataPedido(),
-                itensResp));
+                itensResp
+        ));
     }
 
     // 3. BUSCAR PEDIDOS POR CLIENTE
@@ -113,32 +115,30 @@ public class PedidoController {
                         pedido.getStatus(),
                         pedido.getDataPedido(),
                         pedido.getItens() != null ? pedido.getItens().stream()
-                                .map(i -> new ItemPedidoResponse(i.getProduto().getId(), i.getProduto().getNome(),
-                                        i.getQuantidade(), i.getPrecoUnitario()))
-                                .collect(Collectors.toList()) : List.of()))
+                                .map(i -> new ItemPedidoResponse(i.getProduto().getId(), i.getProduto().getNome(), i.getQuantidade(), i.getPrecoUnitario()))
+                                .collect(Collectors.toList()) : List.of()
+                ))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(pedidosResp);
     }
 
-    // 4. ADICIONAR ITEM AO PEDIDO (IMPLEMENTAR)
-    @Transactional
+    //  4. ADICIONAR ITEM AO PEDIDO (IMPLEMENTAR)
+    @Transactional 
     @PostMapping("/{pedidoId}/itens")
     public ResponseEntity<PedidoResponse> adicionarItem(@PathVariable Long pedidoId,
-            @RequestParam Long produtoId,
-            @RequestParam Integer quantidade) {
+                                                       @RequestParam Long produtoId,
+                                                       @RequestParam Integer quantidade) {
         Produto produto = produtoService.buscarPorId(produtoId)
                 .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
         Pedido pedidoAtualizado = pedidoService.adicionarItem(pedidoId, produtoId, quantidade);
 
-        // Se necessário, você pode validar o status do pedido dentro do serviço
-        // adicionarItem
+        // Se necessário, você pode validar o status do pedido dentro do serviço adicionarItem
         // ou lançar uma exceção apropriada se não for permitido adicionar itens.
 
         List<ItemPedidoResponse> itensResp = pedidoAtualizado.getItens().stream()
-                .map(i -> new ItemPedidoResponse(i.getProduto().getId(), i.getProduto().getNome(), i.getQuantidade(),
-                        i.getPrecoUnitario()))
+                .map(i -> new ItemPedidoResponse(i.getProduto().getId(), i.getProduto().getNome(), i.getQuantidade(), i.getPrecoUnitario()))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(new PedidoResponse(
@@ -149,7 +149,8 @@ public class PedidoController {
                 pedidoAtualizado.getValorTotal(),
                 pedidoAtualizado.getStatus(),
                 pedidoAtualizado.getDataPedido(),
-                itensResp));
+                itensResp
+        ));
     }
 
     // 5. CONFIRMAR PEDIDO (IMPLEMENTAR)
@@ -160,7 +161,7 @@ public class PedidoController {
         if (pedido == null) {
             throw new RuntimeException("Pedido não encontrado");
         }
-
+        
         if (pedido.getStatus() != StatusPedido.CRIADO) {
             throw new RuntimeException("Pedido já foi confirmado ou cancelado");
         }
@@ -170,10 +171,9 @@ public class PedidoController {
         }
 
         Pedido pedidoConfirmado = pedidoService.confirmar(id);
-
+        
         List<ItemPedidoResponse> itensResp = pedidoConfirmado.getItens().stream()
-                .map(i -> new ItemPedidoResponse(i.getProduto().getId(), i.getProduto().getNome(), i.getQuantidade(),
-                        i.getPrecoUnitario()))
+                .map(i -> new ItemPedidoResponse(i.getProduto().getId(), i.getProduto().getNome(), i.getQuantidade(), i.getPrecoUnitario()))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(new PedidoResponse(
@@ -184,15 +184,18 @@ public class PedidoController {
                 pedidoConfirmado.getValorTotal(),
                 pedidoConfirmado.getStatus(),
                 pedidoConfirmado.getDataPedido(),
-                itensResp));
+                itensResp
+        ));
     }
 
+
+
     // 7. CANCELAR PEDIDO (NOVO)
-    @Transactional
+    @Transactional 
     @DeleteMapping("/{id}/cancelar")
     public ResponseEntity<PedidoResponse> cancelar(@PathVariable Long id) {
         Pedido pedidoCancelado = pedidoService.cancelar(id);
-
+        
         // Retornar o pedido cancelado como resposta
         return ResponseEntity.ok(new PedidoResponse(
                 pedidoCancelado.getId(),
@@ -220,7 +223,7 @@ public class PedidoController {
             @RequestParam(required = false) StatusPedido status,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim) {
-
+        
         List<Pedido> pedidos = pedidoService.listarComFiltros(status, dataInicio, dataFim);
         List<PedidoResponse> pedidosResp = pedidos.stream()
                 .map(this::convertToPedidoResponse)
@@ -241,8 +244,8 @@ public class PedidoController {
         // Mapear itens manualmente (relacionamento complexo)
         if (pedido.getItens() != null) {
             List<ItemPedidoResponse> itensResp = pedido.getItens().stream()
-                    .map(item -> modelMapper.map(item, ItemPedidoResponse.class))
-                    .collect(Collectors.toList());
+                .map(item -> modelMapper.map(item, ItemPedidoResponse.class))
+                .collect(Collectors.toList());
             response.setItens(itensResp);
         }
 
@@ -256,11 +259,11 @@ public class PedidoController {
     @Transactional
     @PatchMapping("/{id}/status")
     public ResponseEntity<PedidoResponse> atualizarStatus(@PathVariable Long id,
-            @Valid @RequestBody StatusUpdateRequest request) {
+                                                     @Valid @RequestBody StatusUpdateRequest request) {
         try {
             // Extrair status do DTO
             String statusStr = request.getStatus();
-
+            
             // Converter string para enum
             StatusPedido status;
             try {
@@ -268,20 +271,20 @@ public class PedidoController {
             } catch (IllegalArgumentException e) {
                 throw new IllegalArgumentException("Status inválido: " + statusStr);
             }
-
+            
             // ADICIONAR APENAS ESTAS 4 LINHAS:
             Pedido pedido = pedidoService.buscarPorId(id);
             if (pedido == null) {
                 throw new RuntimeException("Pedido não encontrado");
             }
-
+            
             validarTransicaoStatus(pedido.getStatus(), status);
             // FIM DA ADIÇÃO
-
+            
             // Atualizar status
             Pedido pedidoAtualizado = pedidoService.atualizarStatus(id, status);
             return ResponseEntity.ok(convertToPedidoResponse(pedidoAtualizado));
-
+            
         } catch (Exception e) {
             throw new RuntimeException("Erro ao atualizar status: " + e.getMessage());
         }
@@ -345,30 +348,30 @@ public class PedidoController {
         // Buscar restaurante para obter taxa de entrega
         Restaurante restaurante = restauranteService.buscarPorId(request.getRestauranteId())
                 .orElseThrow(() -> new RuntimeException("Restaurante não encontrado"));
-
+        
         BigDecimal subtotal = BigDecimal.ZERO;
-
+        
         // Calcular subtotal dos itens (se houver)
         if (request.getItens() != null && !request.getItens().isEmpty()) {
             for (var itemRequest : request.getItens()) {
                 Produto produto = produtoService.buscarPorId(itemRequest.getProdutoId())
-                        .orElseThrow(
-                                () -> new RuntimeException("Produto não encontrado: " + itemRequest.getProdutoId()));
-
+                        .orElseThrow(() -> new RuntimeException("Produto não encontrado: " + itemRequest.getProdutoId()));
+                
                 BigDecimal valorItem = produto.getPreco()
                         .multiply(BigDecimal.valueOf(itemRequest.getQuantidade()));
                 subtotal = subtotal.add(valorItem);
             }
         }
-
+        
         BigDecimal taxaEntrega = restaurante.getTaxaEntrega();
         BigDecimal valorTotal = subtotal.add(taxaEntrega);
-
+        
         return ResponseEntity.ok(Map.of(
-                "subtotal", subtotal,
-                "taxaEntrega", taxaEntrega,
-                "valorTotal", valorTotal,
-                "restaurante", restaurante.getNome(),
-                "moeda", "BRL"));
+            "subtotal", subtotal,
+            "taxaEntrega", taxaEntrega,
+            "valorTotal", valorTotal,
+            "restaurante", restaurante.getNome(),
+            "moeda", "BRL"
+        ));
     }
 }
