@@ -1,0 +1,10 @@
+=== ENTREGA - TESTE DE ENDPOINT ===
+Data/Hora: 08/09/2025 21:27:03
+Método: DELETE
+URL Completa: http://localhost:8080/api/restaurantes/4
+Status HTTP: 204
+Content-Type: null
+
+
+=== RESPOSTA REAL ===
+(Resposta vazia)

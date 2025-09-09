@@ -1,0 +1,15 @@
+=== ENTREGA - TESTE DE ENDPOINT ===
+Data/Hora: 08/09/2025 21:24:20
+Método: PUT
+URL Completa: http://localhost:8080/api/pedidos/1/confirmar
+Status HTTP: 500
+Content-Type: application/json
+
+
+=== RESPOSTA REAL ===
+{
+  "error" : "Erro interno do servidor",
+  "message" : "Ocorreu um erro inesperado",
+  "timestamp" : "2025-09-08T21:24:20.1045529",
+  "status" : 500
+}

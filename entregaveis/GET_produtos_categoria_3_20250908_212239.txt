@@ -1,0 +1,10 @@
+=== ENTREGA - TESTE DE ENDPOINT ===
+Data/Hora: 08/09/2025 21:22:39
+Método: GET
+URL Completa: http://localhost:8080/api/produtos/categoria/3
+Status HTTP: 200
+Content-Type: application/json
+
+
+=== RESPOSTA REAL ===
+[ ]

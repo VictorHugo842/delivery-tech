@@ -1,0 +1,25 @@
+=== ENTREGA - TESTE DE ENDPOINT ===
+Data/Hora: 08/09/2025 21:23:16
+Método: PUT
+URL Completa: http://localhost:8080/api/produtos/4
+Status HTTP: 200
+Content-Type: application/json
+
+=== DADOS ENVIADOS ===
+{
+  "nome" : "pizza italia",
+  "categoria" : "borda ",
+  "descricao" : "teste",
+  "preco" : 0.1,
+  "restauranteId" : 1
+}
+
+=== RESPOSTA REAL ===
+{
+  "id" : 4,
+  "nome" : "pizza italia",
+  "categoria" : "borda ",
+  "descricao" : "teste",
+  "preco" : 0.1,
+  "disponivel" : true
+}

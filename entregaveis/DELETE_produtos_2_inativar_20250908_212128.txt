@@ -1,0 +1,10 @@
+=== ENTREGA - TESTE DE ENDPOINT ===
+Data/Hora: 08/09/2025 21:21:28
+Método: DELETE
+URL Completa: http://localhost:8080/api/produtos/2/inativar
+Status HTTP: 204
+Content-Type: null
+
+
+=== RESPOSTA REAL ===
+(Resposta vazia)

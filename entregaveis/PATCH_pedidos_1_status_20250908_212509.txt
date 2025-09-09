@@ -1,0 +1,19 @@
+=== ENTREGA - TESTE DE ENDPOINT ===
+Data/Hora: 08/09/2025 21:25:09
+Método: PATCH
+URL Completa: http://localhost:8080/api/pedidos/1/status
+Status HTTP: 500
+Content-Type: application/json
+
+=== DADOS ENVIADOS ===
+{
+  "status" : "CRIADO"
+}
+
+=== RESPOSTA REAL ===
+{
+  "error" : "Erro interno do servidor",
+  "message" : "Ocorreu um erro inesperado",
+  "timestamp" : "2025-09-08T21:25:09.7872351",
+  "status" : 500
+}

@@ -1,0 +1,18 @@
+=== ENTREGA - TESTE DE ENDPOINT ===
+Data/Hora: 08/09/2025 21:28:55
+Método: POST
+URL Completa: http://localhost:8080/api/restaurantes/1/taxa-entrega
+Status HTTP: 400
+Content-Type: application/json
+
+=== DADOS ENVIADOS ===
+{
+  "additionalProp1" : "string",
+  "additionalProp2" : "string",
+  "additionalProp3" : "string"
+}
+
+=== RESPOSTA REAL ===
+{
+  "erro" : "CEP é obrigatório"
+}

@@ -1,0 +1,29 @@
+=== ENTREGA - TESTE DE ENDPOINT ===
+Data/Hora: 08/09/2025 21:29:38
+Método: PUT
+URL Completa: http://localhost:8080/api/restaurantes/3
+Status HTTP: 200
+Content-Type: application/json
+
+=== DADOS ENVIADOS ===
+{
+  "nome" : "a",
+  "categoria" : "b",
+  "endereco" : "c",
+  "taxaEntrega" : 3,
+  "tempoEntregaMinutos" : 1,
+  "telefone" : "21313",
+  "email" : "v@gmail",
+  "avaliacao" : 5
+}
+
+=== RESPOSTA REAL ===
+{
+  "id" : 3,
+  "nome" : "a",
+  "categoria" : "b",
+  "telefone" : "21313",
+  "taxaEntrega" : 3,
+  "tempoEntregaMinutos" : 1,
+  "ativo" : true
+}

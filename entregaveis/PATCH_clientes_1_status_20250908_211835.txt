@@ -1,0 +1,21 @@
+=== ENTREGA - TESTE DE ENDPOINT ===
+Data/Hora: 08/09/2025 21:18:35
+Método: PATCH
+URL Completa: http://localhost:8080/api/clientes/1/status
+Status HTTP: 200
+Content-Type: application/json
+
+
+=== RESPOSTA REAL ===
+{
+  "cliente" : {
+    "id" : 1,
+    "nome" : "João Silva",
+    "telefone" : "11987654321",
+    "endereco" : "Rua das Flores, 123 - Vila Madalena, São Paulo - SP",
+    "email" : "joao@email.com",
+    "ativo" : false,
+    "dataCriacao" : "2025-09-08T21:14:31.441633"
+  },
+  "mensagem" : "Cliente desativado com sucesso"
+}

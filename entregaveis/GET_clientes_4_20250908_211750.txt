@@ -1,0 +1,23 @@
+=== ENTREGA - TESTE DE ENDPOINT ===
+Data/Hora: 08/09/2025 21:17:50
+Método: GET
+URL Completa: http://localhost:8080/api/clientes/4
+Status HTTP: 200
+Content-Type: application/json
+
+
+=== RESPOSTA REAL ===
+{
+  "success" : true,
+  "data" : {
+    "id" : 4,
+    "nome" : "Ana Costa",
+    "telefone" : "11654321098",
+    "endereco" : "Rua Oscar Freire, 321 - Jardins, São Paulo - SP",
+    "email" : "ana@email.com",
+    "ativo" : true,
+    "dataCriacao" : "2025-09-08T21:14:31.441633"
+  },
+  "message" : "Cliente encontrado",
+  "timestamp" : "2025-09-08T21:17:50.6059057"
+}

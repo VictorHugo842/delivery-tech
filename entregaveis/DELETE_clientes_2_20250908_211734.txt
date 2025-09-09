@@ -1,0 +1,10 @@
+=== ENTREGA - TESTE DE ENDPOINT ===
+Data/Hora: 08/09/2025 21:17:34
+Método: DELETE
+URL Completa: http://localhost:8080/api/clientes/2
+Status HTTP: 200
+Content-Type: text/plain;charset=UTF-8
+
+
+=== RESPOSTA REAL ===
+Cliente inativado com sucesso

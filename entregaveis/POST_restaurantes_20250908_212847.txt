@@ -1,0 +1,26 @@
+=== ENTREGA - TESTE DE ENDPOINT ===
+Data/Hora: 08/09/2025 21:28:47
+Método: POST
+URL Completa: http://localhost:8080/api/restaurantes
+Status HTTP: 500
+Content-Type: application/json
+
+=== DADOS ENVIADOS ===
+{
+  "nome": "A"
+  "categoria": "2",
+  "endereco": "A",
+  "taxaEntrega": 5,
+  "tempoEntregaMinutos": 1,
+  "telefone": "C",
+  "email": "B",
+  "avaliacao": 5
+}
+
+=== RESPOSTA REAL ===
+{
+  "error" : "Erro interno do servidor",
+  "message" : "Ocorreu um erro inesperado",
+  "timestamp" : "2025-09-08T21:28:47.8619582",
+  "status" : 500
+}

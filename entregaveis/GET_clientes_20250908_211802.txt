@@ -1,0 +1,34 @@
+=== ENTREGA - TESTE DE ENDPOINT ===
+Data/Hora: 08/09/2025 21:18:02
+Método: GET
+URL Completa: http://localhost:8080/api/clientes
+Status HTTP: 200
+Content-Type: application/json
+
+
+=== RESPOSTA REAL ===
+[ {
+  "id" : 1,
+  "nome" : "João Silva",
+  "telefone" : "11987654321",
+  "endereco" : "Rua das Flores, 123 - Vila Madalena, São Paulo - SP",
+  "email" : "joao@email.com",
+  "ativo" : true,
+  "dataCriacao" : "2025-09-08T21:14:31.441633"
+}, {
+  "id" : 4,
+  "nome" : "Ana Costa",
+  "telefone" : "11654321098",
+  "endereco" : "Rua Oscar Freire, 321 - Jardins, São Paulo - SP",
+  "email" : "ana@email.com",
+  "ativo" : true,
+  "dataCriacao" : "2025-09-08T21:14:31.441633"
+}, {
+  "id" : 5,
+  "nome" : "Carlos Ferreira",
+  "telefone" : "11543210987",
+  "endereco" : "Rua 25 de Março, 654 - Centro, São Paulo - SP",
+  "email" : "carlos@email.com",
+  "ativo" : true,
+  "dataCriacao" : "2025-09-08T21:14:31.441633"
+} ]
