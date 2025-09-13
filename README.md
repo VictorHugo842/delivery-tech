@@ -56,12 +56,6 @@ Sistema de delivery desenvolvido com Spring Boot e Java 21.​
 
 - Banco: H2 em memória​
 
-- Profile: development​
-
-​
-
-## 👨‍💻 Desenvolvedor​
-
-[Victor Hugo dos Santos] - [Turma 3  - 58A]​
+- Profile: development​​
 
 Desenvolvido com JDK 21 e Spring Boot 3.5.4
